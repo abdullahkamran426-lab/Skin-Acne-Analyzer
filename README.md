@@ -15,7 +15,6 @@ AI-powered skin acne detection and mapping tool using YOLOv11 object detection m
 ```
 skinacne/
 ├── app.py               # Main Streamlit application (UI + Backend combined)
-├── requirements.txt     # Python dependencies
 ├── skinacne.ipynb       # Jupyter notebook for model training
 ├── skinacne.pt          # Trained YOLOv11 model
 └── README.md           # This file
@@ -44,7 +43,6 @@ Simply run the Streamlit application:
 streamlit run app.py
 ```
 
-The application will be available at `http://localhost:8501`
 
 ## Usage
 
@@ -87,12 +85,4 @@ The notebook includes:
 - Check that PyTorch is compatible with your system
 - Ensure the model file is not corrupted
 
-## Notes
 
-- The current model is trained for acne detection only (1 class)
-- For best results, use high-resolution images with good lighting
-- The model may not detect all types of skin conditions - it's specifically trained for acne lesions
-
-## License
-
-This project is for educational and research purposes.

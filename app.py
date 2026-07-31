@@ -17,7 +17,7 @@ st.set_page_config(
     page_title="Skin Acne Analyzer",
     page_icon="✨",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 # ============================================
@@ -26,30 +26,67 @@ st.set_page_config(
 st.markdown("""
 <style>
     .main-title {
-        font-size: 2.8rem;
-        font-weight: 700;
+        font-size: 3.5rem;
+        font-weight: 800;
         color: #9d174d;
         margin-bottom: 0.5rem;
+        text-align: center;
     }
     .subtitle {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         color: #4b5563;
-        margin-bottom: 2rem;
+        margin-bottom: 3rem;
+        text-align: center;
     }
-    .metric-card {
-        background-color: #fdf2f8;
-        padding: 1.2rem;
-        border-radius: 10px;
-        border-left: 5px solid #ec4899;
+    .hero-container {
+        background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+        padding: 3rem;
+        border-radius: 20px;
+        margin-bottom: 2rem;
+        text-align: center;
+        color: white;
+    }
+    .workflow-card {
+        background-color: #f8fafc;
+        padding: 2rem;
+        border-radius: 15px;
+        border: 2px solid #e2e8f0;
+        margin-bottom: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+    .workflow-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .step-number {
+        background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
         margin-bottom: 1rem;
+    }
+    .upload-section {
+        background-color: #fdf2f8;
+        padding: 2rem;
+        border-radius: 15px;
+        border: 2px dashed #ec4899;
+        margin-top: 2rem;
     }
     .acne-detected {
         color: #be185d;
         font-weight: bold;
+        font-size: 1.2rem;
     }
     .clear-skin {
         color: #047857;
         font-weight: bold;
+        font-size: 1.2rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -130,19 +167,37 @@ def predict_acne(image, model):
 # MAIN APP UI
 # ============================================
 
-# Sidebar
-st.sidebar.image("https://cdn-icons-png.flaticon.com/512/2864/2864239.png", width=100)
-st.sidebar.title("Configuration")
-st.sidebar.markdown("""
-### How it works:
-1. Upload a high-quality close-up photo of the affected skin area.
-2. The image is processed by a YOLOv11 model.
-3. Acne lesions are automatically detected and mapped.
-""")
+# Hero Section
+st.markdown('<div class="hero-container">', unsafe_allow_html=True)
+st.markdown('<h1 style="font-size: 3.5rem; font-weight: 800; margin-bottom: 1rem;">✨ Skin Acne Analyzer</h1>', unsafe_allow_html=True)
+st.markdown('<p style="font-size: 1.3rem; margin-bottom: 0;">AI-Powered Acne Detection and Mapping Tool</p>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
-# Main page title
-st.markdown('<div class="main-title">✨ Skin Acne Analyzer</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">AI-powered acne detection and mapping tool.</div>', unsafe_allow_html=True)
+# Workflow Section
+st.markdown('<h2 style="font-size: 2rem; font-weight: 700; color: #9d174d; margin-bottom: 1.5rem; text-align: center;">How It Works</h2>', unsafe_allow_html=True)
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown('<div class="workflow-card">', unsafe_allow_html=True)
+    st.markdown('<div class="step-number">1</div>', unsafe_allow_html=True)
+    st.markdown('<h3 style="font-size: 1.3rem; font-weight: 700; color: #9d174d; margin-bottom: 0.5rem;">Upload Photo</h3>', unsafe_allow_html=True)
+    st.markdown('<p style="color: #4b5563; margin: 0;">Upload a close-up photo of the affected skin area</p>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with col2:
+    st.markdown('<div class="workflow-card">', unsafe_allow_html=True)
+    st.markdown('<div class="step-number">2</div>', unsafe_allow_html=True)
+    st.markdown('<h3 style="font-size: 1.3rem; font-weight: 700; color: #9d174d; margin-bottom: 0.5rem;">AI Analysis</h3>', unsafe_allow_html=True)
+    st.markdown('<p style="color: #4b5563; margin: 0;">Our YOLOv11 model processes the image to detect acne</p>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
+with col3:
+    st.markdown('<div class="workflow-card">', unsafe_allow_html=True)
+    st.markdown('<div class="step-number">3</div>', unsafe_allow_html=True)
+    st.markdown('<h3 style="font-size: 1.3rem; font-weight: 700; color: #9d174d; margin-bottom: 0.5rem;">View Results</h3>', unsafe_allow_html=True)
+    st.markdown('<p style="color: #4b5563; margin: 0;">Get instant acne detection with mapping</p>', unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Load model
 model = load_model()
@@ -151,77 +206,50 @@ if model is None:
     st.error("Failed to load the model. Please check if 'skinacne.pt' exists in the same directory.")
     st.stop()
 
-# Display model information
-st.sidebar.markdown(f"""
-### Model Information:
-- **Model**: YOLOv11
-- **Classes**: {model.names}
-- **Task**: {model.task}
-""")
+# Model Information
+st.markdown('<div style="background-color: #fdf2f8; padding: 1.5rem; border-radius: 15px; margin: 2rem 0;">', unsafe_allow_html=True)
+st.markdown('<h3 style="font-size: 1.3rem; font-weight: 700; color: #9d174d; margin-bottom: 1rem;">Model Information</h3>', unsafe_allow_html=True)
+st.markdown(f'<p style="color: #4b5563; margin: 0.5rem 0;"><strong>Model:</strong> YOLOv11</p>', unsafe_allow_html=True)
+st.markdown(f'<p style="color: #4b5563; margin: 0.5rem 0;"><strong>Classes:</strong> {model.names}</p>', unsafe_allow_html=True)
+st.markdown(f'<p style="color: #4b5563; margin: 0.5rem 0;"><strong>Task:</strong> {model.task}</p>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
 # ============================================
 # FILE UPLOAD AND DISPLAY
 # ============================================
 
-# Step 1: Upload image file
-uploaded_file = st.file_uploader("Choose a photo...", type=["jpg", "jpeg", "png"])
+st.markdown('<div class="upload-section">', unsafe_allow_html=True)
+st.markdown('<h2 style="font-size: 2rem; font-weight: 700; color: #9d174d; margin-bottom: 1.5rem; text-align: center;">Analyze Your Skin</h2>', unsafe_allow_html=True)
 
-# Step 2: Check if file is uploaded
+# Step 1: File uploader widget
+uploaded_file = st.file_uploader("Choose a photo...", type=["jpg", "jpeg", "png"], label_visibility="collapsed")
+
+# Step 2: Display image if uploaded
 if uploaded_file is not None:
-    # Step 3: Open and read the image
     image = Image.open(uploaded_file)
+    st.image(image, caption="Uploaded Photo", use_container_width=True)
     
-    # Step 4: Create two columns for side-by-side display
-    col1, col2 = st.columns(2)
+    # Run prediction
+    with st.spinner("Analyzing skin..."):
+        detections, annotated_image = predict_acne(image, model)
     
-    # Step 5: Display original image in left column
-    with col1:
-        st.subheader("Original Image")
-        st.image(image, use_column_width=True)
+    # Display results
+    st.markdown('<h2 style="font-size: 2rem; font-weight: 700; color: #9d174d; margin-top: 2rem; margin-bottom: 1rem;">Detection Results</h2>', unsafe_allow_html=True)
     
-    # Step 6: Display analysis in right column
-    with col2:
-        st.subheader("Analysis & Detection")
+    if detections:
+        st.markdown(f'<div class="acne-detected">Acne Detected: {len(detections)} lesions</div>', unsafe_allow_html=True)
         
-        # Step 7: Run prediction with loading indicator
-        with st.spinner("Analyzing skin surface..."):
-            try:
-                # Step 8: Get predictions from the model
-                detections, annotated_image = predict_acne(image, model)
-                
-                # Step 9: Display the image with detected acne marked
-                st.image(annotated_image, use_column_width=True)
-                
-                # Step 10: Show detection results
-                if len(detections) > 0:
-                    # Display count of detected acne
-                    st.markdown(f'<div class="metric-card">Detections: <span class="acne-detected">Found {len(detections)} acne lesion(s)</span></div>', unsafe_allow_html=True)
-                    
-                    # Step 11: Create a table with detection details
-                    df = pd.DataFrame(detections)
-                    
-                    # Convert confidence to percentage
-                    df["confidence"] = df["confidence"].apply(lambda x: f"{x * 100:.2f}%")
-                    
-                    # Round bounding box coordinates
-                    df["bbox"] = df["bbox"].apply(lambda x: [round(val, 1) for val in x])
-                    
-                    # Rename columns for better readability
-                    df.rename(columns={
-                        "class": "Type",
-                        "confidence": "Confidence Score",
-                        "bbox": "Bounding Box [xmin, ymin, xmax, ymax]"
-                    }, inplace=True)
-                    
-                    # Display the table
-                    st.dataframe(df, use_container_width=True)
-                else:
-                    # No acne detected
-                    st.markdown('<div class="metric-card">Detections: <span class="clear-skin">No active acne lesions detected</span></div>', unsafe_allow_html=True)
-                    
-            except Exception as e:
-                # Handle any errors during analysis
-                st.error(f"Error during analysis: {str(e)}")
+        # Display annotated image
+        st.image(annotated_image, caption="Annotated Photo with Detections", use_container_width=True)
+        
+        # Display detection details
+        st.markdown('<h3 style="font-size: 1.5rem; font-weight: 700; color: #9d174d; margin-top: 1.5rem; margin-bottom: 1rem;">Detection Details</h3>', unsafe_allow_html=True)
+        df = pd.DataFrame(detections)
+        st.dataframe(df, use_container_width=True)
+    else:
+        st.markdown('<div class="clear-skin">No acne detected</div>', unsafe_allow_html=True)
+        st.info("The skin appears clear or no acne was detected above the confidence threshold.")
 else:
-    # Prompt user to upload an image
-    st.info("Please upload a photo of the skin to start the analysis.")
+    st.markdown('<p style="text-align: center; color: #4b5563; font-size: 1.1rem;">👆 Upload a photo above to begin analysis</p>', unsafe_allow_html=True)
+
+st.markdown('</div>', unsafe_allow_html=True)
